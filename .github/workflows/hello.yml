@@ -1,7 +1,7 @@
-name: Hello
-on: push
+name: Hello # File name は全て小文字で命名規則があるようにする
+on: push # event
 jobs:
-  hello:
+  hello: # id
     runs-on: ubuntu-latest
     steps:
     - run: echo "Hello, world"
