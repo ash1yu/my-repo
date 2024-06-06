@@ -10,3 +10,4 @@ jobs:
             - env:
                 EXAMPLE: Defined by step level
               run: echo '${EXAMPLE}'
+            - run: echo '${GITHUB_ACTOR}'
