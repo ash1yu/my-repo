@@ -10,4 +10,8 @@ jobs:
             - uses: actions/setup-go@v5
               with:
                 go-version: '1.22'
+<<<<<<< HEAD
             - run: go test ./...
+=======
+            - run: go test go/excellet/...
+>>>>>>> ce8fca758bf2018dd4f07fd3dfcc70291aebaa3b
