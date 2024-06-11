@@ -20,5 +20,6 @@ func TestEvenOrOdd3(t *testing.T) {
 	result := EvenOrOdd(11)
 	if result != "odd" {
 		t.Errorf("expected: even, actual: %s", result)
+
 	}
 }
