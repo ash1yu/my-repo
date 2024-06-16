@@ -4,14 +4,14 @@ on:
         paths: ['.github/workflows/*.yml', '.github/workflows/*.yaml']
 defaults:
     run:
-        shell: bash
+        shell: bash # デフォルトシェル パイプエラーを拾えるように､Bashの起動オプションを変更
 concurrency:
     group: ${{ github.workflow }}-${{ github.ref }}
     cancel-in-progress: true
 jobs:
     lint:
         runs-on: ubuntu-latest
-        timeout-minutes: 5
+        timeout-minutes: 5 # ワークフローの実行時間が5分を超えたら停止する
         steps:
             - uses: actions/checkout@v4
             - run: |
