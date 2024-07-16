@@ -23,3 +23,15 @@ jobs:
                 gh release upload "${VERSION}" "${RUNNER_TEMP}/example"
               env:
                 GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN}}
+            - name: Get release notes
+              id: get_release_notes
+              run: |
+                RELEASE_NOTES=$(gh release view "${{ env.VERSION }}" --json body --jq .body)
+                echo "::set-output name=notes::${RELEASE_NOTES}"
+              env:
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            - name: Update release with notes
+              run: |
+                gh release edit "${{ env.VERSION }}" --notes "${{ steps.get_release_notes.outputs.notes }}"
+              env:
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
