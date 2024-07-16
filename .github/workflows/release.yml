@@ -26,5 +26,6 @@ jobs:
             - run: |
                 gh release view "${VERSION}" > release.md
                 cat release.md
+                gh release upload "${VERSION}" release.md
               env:
                 GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN}}
