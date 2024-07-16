@@ -1,44 +1,25 @@
 name: Release
-
 on:
-  push:
-    tags:
-      - 'v*.*.*'
-
+    push:
+        tags:
+            - 'v[0-9]+.[0-9]+.[0-9]+'
 jobs:
-  release:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-
-    - name: Generate Release Notes
-      id: release_notes
-      uses: google-github-actions/release-please-action@v2
-      with:
-        release-type: simple
-
-    - name: Create release.md file
-      run: echo "${{ steps.release_notes.outputs.release_notes }}" > release.md
-
-    - name: Create GitHub Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
-        body: ${{ steps.release_notes.outputs.release_notes }}
-        draft: false
-        prerelease: false
-
-    - name: Upload release.md as asset
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./release.md
-        asset_name: release.md
-        asset_content_type: text/markdown
+    release:
+        runs-on: ubuntu-latest
+        env:
+            VERSION: ${{ github.ref_name}}
+        permissions:
+            contents: write
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-go@v5
+              with:
+                go-version: '1.22'
+            - run: |
+                go build -ldflags "-X main.version=${VERSION}" \
+                -o "${RUNNER_TEMP}/example" go/example/main.go
+            - run: |
+                go release create "${VERSION}" --titile "${VERSION}" --generate-notes
+                gh release upload "${VERISON}" "${RUNNER_TEMP}/exapme"
+              env:
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN}}
