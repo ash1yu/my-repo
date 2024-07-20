@@ -2,7 +2,7 @@ name: Dynamic matrix
 on: push
 jobs:
     prepare:
-        runs-on: ubnuntu-latest
+        runs-on: ubuntu-latest
         steps:
             - id: dynamic
               run: |
